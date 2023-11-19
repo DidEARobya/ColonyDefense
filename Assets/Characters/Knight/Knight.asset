@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 304c29abdc2064b40a7ab7e89f771bf6, type: 3}
+  m_Name: Knight
+  m_EditorClassIdentifier: 
+  characterName: Knight
+  characterModel: {fileID: 3800709858710074109, guid: a7ef19741838d304f9e96a178acc17cd, type: 3}
+  health: 40
+  attack: 20
+  cost: 25
+  moveSpeed: 3
+  workSpeed: 5
+  taskNames: 00000000010000000200000003000000
+  defaultPriorities: 02000000000000000300000001000000
