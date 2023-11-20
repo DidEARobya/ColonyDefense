@@ -12,7 +12,8 @@ public enum AIStates
 public enum TargetType
 {
     RESOURCE,
-    MATERIAL
+    MATERIAL,
+    STRUCTURE
 }
 
 public class WorkAI : MonoBehaviour

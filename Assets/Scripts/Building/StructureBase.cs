@@ -38,7 +38,10 @@ public class StructureBase : MonoBehaviour
         sCollider = this.AddComponent<BoxCollider2D>();
         sCollider.size = new Vector2(0.49f, 0.49f);
         rigidBody = this.AddComponent<Rigidbody2D>();
-        rigidBody.isKinematic = true;
+        rigidBody.gravityScale = 0;
+        rigidBody.mass = 100000;
+        rigidBody.isKinematic = false;
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
         rigidBody.useFullKinematicContacts = true;
 
         renderer = this.AddComponent<SpriteRenderer>();

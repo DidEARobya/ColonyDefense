@@ -19,7 +19,7 @@ MonoBehaviour:
   materialValue: 2
   resourceType: 1
   plantSprite: {fileID: 21300000, guid: 9caa664ca04bbee488c2baf7ca99e0f8, type: 3}
-  growthRate: 10
+  growthRate: 5
   growthDelay: 5
-  tendCooldown: 5
-  tendRate: 50
+  tendCooldown: 20
+  tendRate: 20

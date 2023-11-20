@@ -10,7 +10,8 @@ public enum TaskName
     MINE,
     TENDPLANTS,
     HARVEST,
-    GATHER
+    GATHER,
+    CONSTRUCTION
 }
 public enum TaskPriority
 {
@@ -64,64 +65,71 @@ public class BehaviourTreeBase : MonoBehaviour
 
         for (int i = 0; i < priorityList.Count; i++)
         {
-            if (taskDict[priorityList[i]] != priority)
+            if (taskDict[priorityList[i]] == priority)
             {
-                break;
-            }
+                MonoBehaviour target = null;
 
-            MonoBehaviour target = null;
+                switch (priorityList[i])
+                {
+                    case TaskName.MINE:
 
-            switch (priorityList[i])
-            {
-                case TaskName.MINE:
+                        target = GameHandler.GetClosestAvailableOre_Static(control);
 
-                    target = GameHandler.GetClosestAvailableOre_Static(control);
+                        if (target != null)
+                        {
+                            targetInfo.Add(target, TargetType.RESOURCE);
+                        }
 
-                    if (target != null)
-                    {
-                        targetInfo.Add(target, TargetType.RESOURCE);
-                    }
+                        break;
 
-                    break;
+                    case TaskName.TENDPLANTS:
 
-                case TaskName.TENDPLANTS:
+                        target = GameHandler.GetClosestAvailableSeed_Static(control);
 
-                    target = GameHandler.GetClosestAvailableSeed_Static(control);
+                        if (target != null)
+                        {
+                            targetInfo.Add(target, TargetType.RESOURCE);
+                        }
 
-                    if (target != null)
-                    {
-                        targetInfo.Add(target, TargetType.RESOURCE);
-                    }
+                        break;
 
-                    break;
+                    case TaskName.HARVEST:
 
-                case TaskName.HARVEST:
+                        target = GameHandler.GetClosestAvailablePlant_Static(control);
 
-                    target = GameHandler.GetClosestAvailablePlant_Static(control);
+                        if (target != null)
+                        {
+                            targetInfo.Add(target, TargetType.RESOURCE);
+                        }
 
-                    if (target != null)
-                    {
-                        targetInfo.Add(target, TargetType.RESOURCE);
-                    }
+                        break;
 
-                    break;
+                    case TaskName.GATHER:
 
-                case TaskName.GATHER:
+                        target = GameHandler.GetClosestAvailableMaterial_Static(control);
 
-                    target = GameHandler.GetClosestAvailableMaterial_Static(control);
+                        if (target != null)
+                        {
+                            targetInfo.Add(target, TargetType.MATERIAL);
+                        }
 
-                    if (target != null)
-                    {
-                        targetInfo.Add(target, TargetType.MATERIAL);
-                    }
+                        break;
+                    case TaskName.CONSTRUCTION:
 
-                    break;
+                        target = GameHandler.GetClosestAvailableStructure_Static(control);
 
-            }
+                        if (target != null)
+                        {
+                            targetInfo.Add(target, TargetType.STRUCTURE);
+                        }
 
-            if (targetInfo.Count != 0)
-            {
-                return targetInfo;
+                        break;
+                }
+
+                if (targetInfo.Count != 0)
+                {
+                    return targetInfo;
+                }
             }
         }
 

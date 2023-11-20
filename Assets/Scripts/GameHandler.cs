@@ -2,6 +2,7 @@ using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Type
@@ -18,6 +19,7 @@ public class GameHandler : MonoBehaviour
     private List<PlantControl> worldSeeds;
     private List<PlantControl> worldPlants;
     private List<MaterialControl> worldMaterials;
+    private List<StructureControl> worldStructures;
     //private List<CharacterControl> worldEnemies;
 
     // Start is called before the first frame update
@@ -29,6 +31,7 @@ public class GameHandler : MonoBehaviour
             worldSeeds = new List<PlantControl>();
             worldPlants = new List<PlantControl>();
             worldMaterials = new List<MaterialControl>();
+            worldStructures = new List<StructureControl>();
 
             worldGrid = new WorldGrid(80, 60, 1, this.transform.position.x, this.transform.position.y);
             instance = this;
@@ -218,7 +221,50 @@ public class GameHandler : MonoBehaviour
     {
         return instance.GetClosestAvailableMaterial(character);
     }
+    private StructureControl GetClosestAvailableStructure(CharacterControl character)
+    {
+        if (worldStructures.Count == 0)
+        {
+            return null;
+        }
 
+        StructureControl nearestResource = null;
+
+        for (int i = 0; i < worldStructures.Count; i++)
+        {
+            if (nearestResource == null)
+            {
+                if (worldStructures[i].isTargeted == false && worldStructures[i])
+                {
+                    nearestResource = worldStructures[i];
+                }
+            }
+            else
+            {
+                if (worldStructures[i].isTargeted == false && worldStructures[i])
+                {
+                    float last = Vector2.Distance(character.transform.position, nearestResource.transform.position);
+                    float current = Vector2.Distance(character.transform.position, worldStructures[i].transform.position);
+
+                    if (current < last)
+                    {
+                        nearestResource = worldStructures[i];
+                    }
+                }
+            }
+        }
+
+        if (nearestResource != null && nearestResource.isTargeted == false)
+        {
+            return nearestResource;
+        }
+
+        return null;
+    }
+    public static StructureControl GetClosestAvailableStructure_Static(CharacterControl character)
+    {
+        return instance.GetClosestAvailableStructure(character);
+    }
     private void AddOre(ResourceControl resource)
     {
         if (worldOres.Contains(resource) != true)
@@ -264,7 +310,17 @@ public class GameHandler : MonoBehaviour
     {
         instance.AddMaterial(material);
     }
-
+    private void AddStructure(StructureControl structure)
+    {
+        if (worldStructures.Contains(structure) != true)
+        {
+            worldStructures.Add(structure);
+        }
+    }
+    public static void AddStructure_Static(StructureControl structure)
+    {
+        instance.AddStructure(structure);
+    }
     private void RemoveOre(ResourceControl resource)
     {
         if (worldOres.Contains(resource))
@@ -309,7 +365,17 @@ public class GameHandler : MonoBehaviour
     {
         instance.RemoveMaterial(material);
     }
-
+    private void RemoveStructure(StructureControl structure)
+    {
+        if (worldStructures.Contains(structure))
+        {
+            worldStructures.Remove(structure);
+        }
+    }
+    public static void RemoveStructure_Static(StructureControl structure)
+    {
+        instance.RemoveStructure(structure);
+    }
     private List<ResourceControl> GetOres()
     {
         return worldOres;
@@ -341,6 +407,14 @@ public class GameHandler : MonoBehaviour
     public static List<MaterialControl> GetMaterials_Static()
     {
         return instance.GetMaterials();
+    }
+    private List<StructureControl> GetStructures()
+    {
+        return worldStructures;
+    }
+    public static List<StructureControl> GetStructures_Static()
+    {
+        return instance.GetStructures();
     }
     private int GetOreCount()
     {
