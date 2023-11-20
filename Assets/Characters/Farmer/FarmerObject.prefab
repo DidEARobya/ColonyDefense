@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &319081953135567081
+--- !u!1 &8300703136278527153
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1371934318651352027}
-  - component: {fileID: -5739255860192686914}
-  m_Layer: 9
-  m_Name: WallObject
+  - component: {fileID: 5200419043591708367}
+  - component: {fileID: 6019319742439455261}
+  m_Layer: 0
+  m_Name: FarmerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1371934318651352027
+--- !u!4 &5200419043591708367
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 319081953135567081}
+  m_GameObject: {fileID: 8300703136278527153}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.825581, y: 4.2914157, z: -70.323235}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-5739255860192686914
+--- !u!114 &6019319742439455261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 319081953135567081}
+  m_GameObject: {fileID: 8300703136278527153}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bc62758695a8584787d8fe6ef8eecad, type: 3}
+  m_Script: {fileID: 11500000, guid: 381c4e486833b8c4d864e0a09407678f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structureName: Stone Wall
-  durability: 400
-  woodDurability: 300
-  stoneDurability: 400
-  steelDurability: 500
-  woodSprite: {fileID: 21300000, guid: 7c4038e7a6d317e458d9aa39d4bf7b7a, type: 3}
-  stoneSprite: {fileID: 21300000, guid: 199125f273cf82e4ab4967dcabc27e9b, type: 3}
-  steelSprite: {fileID: 21300000, guid: c771ac652de40b44fa3e8f8d172feebe, type: 3}
-  sCollider: {fileID: 0}
+  characterData: {fileID: 11400000, guid: a0f2019936890ba4bbfab91704abd899, type: 2}
+  characterName: 
+  characterModel: {fileID: 0}
+  health: 0
+  attack: 0
+  cost: 0
+  moveSpeed: 0
+  workSpeed: 0

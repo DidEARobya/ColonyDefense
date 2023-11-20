@@ -102,11 +102,12 @@ public class BuildingHandler : MonoBehaviour
         structure.AddComponent<StructureControl>();
         structure.GetComponent<StructureControl>().Init(structure.GetComponent<StructureBase>());
         structure.GetComponent<StructureBase>().IsReady();
+        GameHandler.AddStructure_Static(structure.GetComponent<StructureControl>());
 
         AstarPath.active.AddWorkItem(new AstarWorkItem(ctx =>
         {
             var node = AstarPath.active.GetNearest(structure.transform.position).node;
-            node.Penalty = (uint)structure.GetComponent<StructureBase>().durability * 10;
+            node.Penalty = (uint)structure.GetComponent<StructureBase>().durability * 100;
             node.Tag = 2;
 
             structure = null;
