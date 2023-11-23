@@ -38,20 +38,16 @@ public class MaterialControl : CarryableObject, IInteractable
         {
             isTargeted = false;
             return;
-
         }
 
         isTargeted = true;
         newInteractDelay += Time.deltaTime;
 
-        if (newInteractDelay >= newInteractWait)
+        if (newInteractDelay >= newInteractWait && targetedBy.heldObject != this)
         {
             if (targetedBy.CheckIfStopped(0.05f) == true)
             {
-                if(targetedBy.heldObject != this)
-                {
-                    Carry(targetedBy);
-                }
+                Carry(targetedBy);
             }
         }
 
@@ -61,7 +57,7 @@ public class MaterialControl : CarryableObject, IInteractable
 
             if(targetedBy.isSelected == false)
             {
-                targetedBy.MoveCharacterTo(checkpoint.transform.position);
+                //targetedBy.MoveCharacterTo(checkpoint.transform.position);
             }
         }
     }
@@ -83,25 +79,53 @@ public class MaterialControl : CarryableObject, IInteractable
     }
     public void Interact(CharacterControl character)
     {
-        if (targetedBy.heldObject != null)
+        if (targetedBy?.GetCurrentTask()?.taskType == TaskTypes.STORE)
+        {
+            Carry(targetedBy);
+            newInteractDelay = 0;
+            return;
+        }
+
+        if (targetedBy?.heldObject != null)
         {
             targetedBy.heldObject.Drop();
         }
 
+        targetedBy = character;
+
         targetedBy.aiPath.endReachedDistance = 0;
         targetedBy.MoveCharacterTo(this.transform.position);
+
         newInteractDelay = 0;
     }
-    public Task Task(CharacterControl character)
+    public List<Task> Task(CharacterControl character)
     {
-        if (targetedBy != null)
+        if (targetedBy != null && targetedBy != character)
+        {
+            return null;
+        }
+
+        List<Task> tasks = new List<Task>();
+
+        targetedBy = character;
+
+        TaskRetrieve task = new TaskRetrieve(character, gameObject);
+        tasks.Add(task);
+        TaskStore storeTask = new TaskStore(character, checkpoint);
+        tasks.Add(storeTask);
+
+        return tasks;
+    }
+    public Task Task(CharacterControl character, bool playerOverride)
+    {
+        if (targetedBy != null && targetedBy != character)
         {
             return null;
         }
 
         targetedBy = character;
 
-        TaskDestroy task = new TaskDestroy(character, gameObject);
+        TaskPlayerCarry task = new TaskPlayerCarry(character, gameObject);
 
         return task;
     }
@@ -122,11 +146,13 @@ public class MaterialControl : CarryableObject, IInteractable
         }
         else
         {
-            if (targetedBy != null)
+            if (targetedBy.GetNextTask()?.taskType == TaskTypes.STORE)
             {
-                Drop();
-                this.transform.position = worldGrid.GetCellCentre(worldGrid.GetWorldToCell(this.transform.position));
+                return;
             }
+
+            Drop();
+            this.transform.position = worldGrid.GetCellCentre(worldGrid.GetWorldToCell(this.transform.position));
         }
     }
 }

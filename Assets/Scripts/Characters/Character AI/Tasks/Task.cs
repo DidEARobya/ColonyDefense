@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+public enum TaskTypes
+{
+    STORE,
+    PLAYER,
+    OTHER
+}
 public class Task
 {
     protected CharacterControl taskOwner;
@@ -11,6 +17,7 @@ public class Task
     protected Transform checkpointTransform;
 
     protected bool taskActive;
+    public TaskTypes taskType = TaskTypes.OTHER;
 
     public Task(CharacterControl owner, GameObject target)
     {

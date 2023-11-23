@@ -6,7 +6,9 @@ public interface IInteractable
 {
     CharacterControl GetCharacterControl();
     void Interact(CharacterControl character);
-    Task Task(CharacterControl character);
+    List<Task> Task(CharacterControl character);
+
+    Task Task(CharacterControl character, bool playerOverride);
     void Cancel(GameObject newObj);
 }
 

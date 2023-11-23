@@ -176,12 +176,14 @@ public class PlantControl : ResourceControl
 
         }
     }
-    public override Task Task(CharacterControl character)
+    public override List<Task> Task(CharacterControl character)
     {
         if (targetedBy != null)
         {
             return null;
         }
+
+        List<Task> tasks = new List<Task>();
 
         Task task = null;
         targetedBy = character;
@@ -195,9 +197,36 @@ public class PlantControl : ResourceControl
             task = new TaskDestroy(character, gameObject);
         }
 
+        tasks.Add(task);
+
+        return tasks;
+    }
+    public override Task Task(CharacterControl character, bool playerOverride)
+    {
+        if (targetedBy != null)
+        {
+            return null;
+        }
+
+        if(needsTending == false)
+        {
+            return null;
+        }
+
+        Task task = null;
+        targetedBy = character;
+
+        if (state == ResourceStates.SEED)
+        {
+            task = new TaskTend(character, gameObject);
+        }
+        else
+        {
+            task = new TaskDestroy(character, gameObject);
+        }
+
         return task;
     }
-
     protected override void IsFarmed()
     {
         targetedBy.interactingObject = null;

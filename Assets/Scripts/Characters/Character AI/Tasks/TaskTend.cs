@@ -17,12 +17,13 @@ public class TaskTend : Task
     {
         if (taskOwner == null)
         {
-            Debug.Log("No Owner");
-            return false;
+            StopTask();
+            return true;
         }
 
         if (taskTarget == null)
         {
+            StopTask();
             return true;
         }
 
@@ -36,6 +37,7 @@ public class TaskTend : Task
             return false;
         }
 
+        StopTask();
         return true;
     }
 }

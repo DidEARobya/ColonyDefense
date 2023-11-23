@@ -152,6 +152,15 @@ public class CharacterControl : MonoBehaviour, ISelectable, ICharacter
 
         return workAi.tasks[0];
     }
+    public Task GetNextTask()
+    {
+        if (workAi.tasks.Count < 2)
+        {
+            return null;
+        }
+
+        return workAi.tasks[1];
+    }
     public void AddTask(Task task)
     {
         if(workAi.tasks.Contains(task))
@@ -168,6 +177,26 @@ public class CharacterControl : MonoBehaviour, ISelectable, ICharacter
             task.StopTask();
             workAi.tasks.Remove(task);
         }
+    }
+    public void ClearTasks(int ignoreVal)
+    {
+        if(workAi.tasks == null || workAi.tasks.Count == 0)
+        {
+            return;
+        }
+
+        if(workAi.tasks.Count < ignoreVal)
+        {
+            workAi.tasks.Clear();
+            return;
+        }
+
+        for(int i = ignoreVal;  i < workAi.tasks.Count; i++)
+        {
+            workAi.tasks[i].StopTask();    
+        }
+
+        workAi.tasks.Clear();
     }
     public void Interact(CharacterControl character)
     {
@@ -272,6 +301,15 @@ public class CharacterControl : MonoBehaviour, ISelectable, ICharacter
     public void MoveCharacterTo(Vector2 destination)
     {
         aiPath.destination = worldGrid.GetCellCentre(worldGrid.GetWorldToCell(destination));
+    }
+    public void MoveCharacterTo(Vector2 destination, float offset)
+    {
+        Vector2 dir = (Vector2)transform.position - destination;
+        dir = dir.normalized;
+
+        Vector2 targetPos = destination + (dir.normalized * offset);
+
+        aiPath.destination = worldGrid.GetCellCentre(worldGrid.GetWorldToCell(targetPos));
     }
     public bool CheckIfStopped(float remainingDistance)
     {

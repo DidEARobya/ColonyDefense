@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Versioning;
 using UnityEditor;
 using UnityEngine;
@@ -41,15 +42,14 @@ public class SelectionScript : MonoBehaviour
         {
             if(selectedControl == null)
             {
+                activeTask?.StopTask();
                 activeTask = null;
                 return;
             }
 
-            if(activeTask.IsTargetComplete() == true)
+            if (activeTask.IsTargetComplete() == true)
             {
-                activeTask.StopTask();
                 selectedControl.RemoveTask(activeTask);
-                activeTask = null;
             }
         }
 
@@ -163,6 +163,8 @@ public class SelectionScript : MonoBehaviour
                 if (hitData.collider.GetComponent<CharacterControl>() != null)
                 {
                     selectedControl = hitData.collider.GetComponent<CharacterControl>();
+
+                    selectedControl.ClearTasks(1);
                     activeTask = selectedControl.GetCurrentTask();
                 }
                 else
@@ -211,10 +213,9 @@ public class SelectionScript : MonoBehaviour
             {
                 if(activeTask != null)
                 {
-                    GameObject target = activeTask.GetTaskTarget();
-
-                    if(target.GetComponent<CarryableObject>() != true)
+                    if(activeTask.taskType != TaskTypes.PLAYER)
                     {
+                        activeTask.StopTask();
                         selectedControl.RemoveTask(activeTask);
                         activeTask = null;
                     }
@@ -230,16 +231,17 @@ public class SelectionScript : MonoBehaviour
             {
                 if(activeTask != null)
                 {
-                    if(activeTask.GetTaskTarget() == selectedControl.heldObject)
+                    if(activeTask.GetTaskTarget() == selectedControl.heldObject?.gameObject)
                     {
                         return;
                     }
 
+                    activeTask.StopTask();
                     selectedControl.RemoveTask(activeTask);
                     activeTask = null;
                 }
 
-                activeTask = interactableObject.Task(selectedControl);
+                activeTask = interactableObject?.Task(selectedControl, true);
 
                 if(activeTask != null)
                 {
@@ -251,6 +253,7 @@ public class SelectionScript : MonoBehaviour
             {
                 if (activeTask != null)
                 {
+                    activeTask?.StopTask();
                     selectedControl.RemoveTask(activeTask);
                     activeTask = null;
                 }
