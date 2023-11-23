@@ -2,18 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StorageObjectScript : MonoBehaviour
+public class StorageObjectScript : MonoBehaviour, IInteractable
 {
-    // Start is called before the first frame update
-    void Start()
+    public CharacterControl GetCharacterControl()
     {
-        
+        return null;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void Interact(CharacterControl control)
     {
-        
+        control.MoveCharacterTo(transform.position);
+    }
+    public List<Task> Task(CharacterControl control)
+    {
+        return null;
+    }
+    public Task Task(CharacterControl control, bool playerOverride)
+    {
+        return null;
+    }
+    public void Cancel(GameObject gameObject)
+    {
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

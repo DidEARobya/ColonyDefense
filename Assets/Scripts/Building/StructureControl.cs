@@ -162,7 +162,38 @@ public class StructureControl : ResourceControl, IStructure, IInteractable
 
         }
     }
-    public override Task Task(CharacterControl character)
+    public override List<Task> Task(CharacterControl character)
+    {
+        if (targetedBy != null)
+        {
+            return null;
+        }
+
+        List<Task> tasks = new List<Task>();
+
+        Task task = null;
+        targetedBy = character;
+
+        switch(structureState)
+        {
+            case StructureStates.DAMAGED:
+
+                task = new TaskBuild(character, gameObject);
+                tasks.Add(task);
+                break;
+
+            case StructureStates.STABLE:
+                break;
+
+            case StructureStates.TODESTROY:
+                task = new TaskDestroy(character, gameObject);
+                tasks.Add(task);
+                break;
+        }
+
+        return tasks;
+    }
+    public override Task Task(CharacterControl character, bool playerOverride)
     {
         if (targetedBy != null)
         {
@@ -170,9 +201,10 @@ public class StructureControl : ResourceControl, IStructure, IInteractable
         }
 
         Task task = null;
+
         targetedBy = character;
 
-        switch(structureState)
+        switch (structureState)
         {
             case StructureStates.DAMAGED:
 
@@ -217,19 +249,7 @@ public class StructureControl : ResourceControl, IStructure, IInteractable
         }
 
         targetedBy.aiPath.endReachedDistance = 1f;
-        targetedBy.MoveCharacterTo(GetTargetPosition(character));
+        targetedBy.MoveCharacterTo(transform.position, 1);
         newInteractDelay = 0;
-    }
-
-    private Vector2 GetTargetPosition(CharacterControl character)
-    {
-        Vector3 targetPosition = Vector3.zero;
-
-        Vector3 dir = character.transform.position - transform.position;
-        Vector3 dirNormalised = dir.normalized;
-
-        targetPosition = transform.position + (dirNormalised * distanceOffset);
-
-        return targetPosition;
     }
 }

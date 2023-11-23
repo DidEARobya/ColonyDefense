@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TaskBuild : Task
+public class TaskPlayerCarry : Task
 {
-    public TaskBuild(CharacterControl owner, GameObject target) : base(owner, target)
+    public TaskPlayerCarry(CharacterControl owner, GameObject target) : base(owner, target)
     {
         taskOwner = owner;
         taskTarget = target;
         taskActive = false;
+        taskType = TaskTypes.PLAYER;
 
         checkpointTransform = GameObject.Find("Checkpoint").transform;
     }
@@ -17,6 +18,7 @@ public class TaskBuild : Task
     {
         if (taskOwner == null)
         {
+            Debug.Log("No Owner");
             StopTask();
             return true;
         }
@@ -27,17 +29,6 @@ public class TaskBuild : Task
             return true;
         }
 
-        if (taskTarget.GetComponent<StructureControl>() == null)
-        {
-            return false;
-        }
-
-        if (taskTarget.GetComponent<StructureControl>().needsBuilding == true)
-        {
-            return false;
-        }
-
-        StopTask();
-        return true;
+        return false;
     }
 }

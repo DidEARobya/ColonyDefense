@@ -143,10 +143,10 @@ public class ResourceControl : MonoBehaviour, IInteractable
         }
 
         targetedBy.aiPath.endReachedDistance = 1f;
-        targetedBy.MoveCharacterTo(this.transform.position);
+        targetedBy.MoveCharacterTo(this.transform.position, 1);
         newInteractDelay = 0;
     }
-    public virtual Task Task(CharacterControl character)
+    public virtual List<Task> Task(CharacterControl character)
     {
         if (targetedBy != null)
         {
@@ -155,7 +155,22 @@ public class ResourceControl : MonoBehaviour, IInteractable
 
         targetedBy = character;
 
+        List<Task> tasks = new List<Task>();
+
         TaskDestroy task = new TaskDestroy(character, gameObject);
+        tasks.Add(task);
+
+        return tasks;
+    }
+    public virtual Task Task(CharacterControl character, bool playerOverride)
+    {
+        if (targetedBy != null)
+        {
+            return null;
+        }
+
+        targetedBy = character;
+        Task task = new TaskDestroy(character, gameObject);
 
         return task;
     }

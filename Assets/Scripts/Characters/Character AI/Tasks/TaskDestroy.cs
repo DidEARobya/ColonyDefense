@@ -17,8 +17,8 @@ public class TaskDestroy : Task
     {
         if (taskOwner == null)
         {
-            Debug.Log("No Owner");
-            return false;
+            StopTask();
+            return true;
         }
 
         if (taskTarget != null)
@@ -26,6 +26,7 @@ public class TaskDestroy : Task
             return false;
         }
 
+        StopTask();
         return true;
     }
 

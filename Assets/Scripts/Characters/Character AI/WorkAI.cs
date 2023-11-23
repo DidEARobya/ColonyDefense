@@ -35,6 +35,8 @@ public class WorkAI : MonoBehaviour
 
     protected bool isIdle;
     protected bool workCheck;
+    protected bool taskCheck;
+
     // Start is called before the first frame update
     public void Init(CharacterControl character)
     {
@@ -109,15 +111,20 @@ public class WorkAI : MonoBehaviour
                 return;
             }
 
-            if(activeTask.IsTargetComplete() == true)
+            if (taskCheck == false && activeTask.IsTargetComplete() == true)
             {
-                tasks[0].StopTask();
-                tasks.RemoveAt(0);
-                activeTask = null;
+                taskCheck = true;
+                Invoke("EndTask", 0.1f);
             }
         }
     }
+    private void EndTask()
+    {
+        tasks.RemoveAt(0);
+        activeTask = null;
 
+        taskCheck = false;
+    }
     public void ResetAI()
     {
         isIdle = false;
@@ -135,13 +142,16 @@ public class WorkAI : MonoBehaviour
             return;
         }
 
-        Task task = ((IInteractable)targetInfo.First().Key).Task(characterControl);
+        List<Task> newTasks = ((IInteractable)targetInfo.First().Key).Task(characterControl);
 
-        if(task == null)
+        if(newTasks == null || newTasks.Count == 0)
         {
             return;
         }
 
-        tasks.Add(task);
+        for(int i = 0; i < newTasks.Count; i++)
+        {
+            tasks.Add(newTasks[i]);
+        }
     }
 }
